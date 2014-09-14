@@ -1,89 +1,94 @@
 var currency = {
-  "type": {
-    "type": "string",
-    "required": true
-  },
-  "amount": {
-    "type": "string",
-    "required": true
-  }
+    "type": {
+        "type": "string",
+        "required": true
+    },
+    "amount": {
+        "type": "string",
+        "required": true
+    }
 };
 
 module['exports'] = {
-  "description": "provides a digital wallet API",
-  "type": "wallet",
-  "properties": {
-    "owner": "string",
-    "status": {
-      "type": "string",
-      "enum": ['new', 'active', 'disabled', 'locked'],
-      "default": "new"
-    },
-    "receivingAddresses": {
-      "type": "object",
-      "properties": {
-        "publicKey": {
-          "type": "string",
-          "required": true,
-          "minLength": 5
+    "description": "provides a digital wallet API",
+    "type": "wallet",
+    "properties": {
+        "owner": "string",
+        "status": {
+            "type": "string",
+            "enum": ['new', 'active', 'disabled', 'locked'],
+            "default": "new"
+        },
+        prevstatus: {
+            "type": "string",
+            "enum": ['new', 'active', 'disabled', 'locked'],
+            "default": null
+        },
+        "receivingAddresses": {
+            "type": "object",
+            "properties": {
+                "publicKey": {
+                    "type": "string",
+                    "required": true,
+                    "minLength": 5
+                }
+            }
+        },
+        "currencies": {
+            "type": "object",
+            "properties": currency
         }
-      }
     },
-    "currencies": {
-      "type": "object",
-      "properties": currency
-    }
-  },
-  "methods": {
-    "deposit": {
-      "input": {
-        "id": {
-          "type": "any",
-          "required": true
+    "methods": {
+        "deposit": {
+            "input": {
+                "id": {
+                    "type": "any",
+                    "required": true
+                },
+                "currency": currency.type,
+                "amount": currency.amount
+            },
+            "output": {
+                "status": "function"
+            }
         },
-        "currency": currency.type,
-        "amount": currency.amount
-      },
-      "output": {
-        "status": "function"
-      }
-    },
-    "withdraw": {
-      "input": {
-        "id": {
-          "type": "any",
-          "required": true
+        "withdraw": {
+            "input": {
+                "id": {
+                    "type": "any",
+                    "required": true
+                },
+                "currency": currency.type,
+                "amount": currency.amount
+            },
+            "output": "function"
         },
-        "currency": currency.type,
-        "amount": currency.amount
-      },
-      "output": "function"
-    },
-    "lock": {
-      "description": "locks wallet from any further withdrawls",
-      "input": "function",
-      "output": "function"
-    },
-    "unlock": {
-      "description": "unlocks wallet allowing withdrawls",
-      "input": "function",
-      "output": "function"
-    },
-    "generateAddress": {
-      "input": {
-        "id": {
-          "type": "any",
-          "required": true
+        "lock": {
+            "description": "locks wallet from any further withdrawls",
+            "input": "function",
+            "output": "function"
         },
-        "owner": {
-          "type": "string",
-          "required": true
+        "unlock": {
+            "description": "unlocks wallet allowing withdrawls",
+            "input": "function",
+            "output": "function"
         },
-        "type": {
-          "type": "string",
-          "required": true
+        "generateAddress": {
+            "input": {
+                "id": {
+                    "type": "any",
+                    "required": true
+                },
+                "owner": {
+                    "type": "string",
+                    "required": true
+                },
+                "type": {
+                    "type": "string",
+                    "required": true
+                }
+            }
         }
-      }
     }
-  }
 };
